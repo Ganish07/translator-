@@ -1,13 +1,18 @@
-require('dotenv').config();
+require('dotenv').config(); // Load env variables
+
 const express = require('express');
 const axios = require('axios');
+const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/translate', async (req, res) => {
   const { text, source, target } = req.body;
@@ -18,7 +23,7 @@ app.post('/translate', async (req, res) => {
       url: 'https://google-translate1.p.rapidapi.com/language/translate/v2',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
-        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Key': RAPIDAPI_KEY,
         'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com'
       },
       data: new URLSearchParams({
@@ -29,15 +34,19 @@ app.post('/translate', async (req, res) => {
       })
     });
 
-    const translatedText = response.data.data.translations[0].translatedText;
-    res.json({ translatedText });
+    const translated = response.data.data.translations[0].translatedText;
+    res.json({ translatedText: translated });
 
-  } catch (error) {
-    console.error('Translation error:', error.message);
+  } catch (err) {
+    console.error('API error:', err.message);
     res.status(500).json({ error: 'Translation failed' });
   }
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
+
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
