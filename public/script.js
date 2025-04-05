@@ -1,30 +1,31 @@
 async function translateText() {
-  const text = document.getElementById("inputText").value;
-  const sourceLang = document.getElementById("sourceLang").value;
-  const targetLang = document.getElementById("targetLang").value;
+  const text = document.getElementById("input-text").value;
+  const sourceLang = document.getElementById("sourcelang").value;
+  const targetLang = document.getElementById("targetlang").value;
 
   try {
-    const response = await fetch("https://libretranslate.de/translate", {
+    const response = await fetch("/translate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        q: text,
+        text: text,
         source: sourceLang,
-        target: targetLang,
-        format: "text"
+        target: targetLang
       })
     });
 
     const data = await response.json();
 
     if (data.translatedText) {
-      document.getElementById("outputText").value = data.translatedText;
+      document.getElementById("output-text").value = data.translatedText;
     } else {
-      document.getElementById("outputText").value = "Translation failed.";
+      document.getElementById("output-text").value = "Translation failed.";
     }
+
   } catch (error) {
-    document.getElementById("outputText").value = "Error while translating. Try again.";
+    console.error("Translation error:", error);
+    document.getElementById("output-text").value = "Error while translating.";
   }
 }
