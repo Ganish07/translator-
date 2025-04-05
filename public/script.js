@@ -3,24 +3,34 @@ async function translateText() {
   const sourceLang = document.getElementById("sourcelang").value;
   const targetLang = document.getElementById("targetlang").value;
 
-  try {
-   const response = await fetch("https://translator-8sxa.onrender.com/translate", {
+  if (!text.trim()) {
+    document.getElementById("output-text").value = "Please enter text to translate.";
+    return;
+  }
 
+  try {
+    const response = await fetch("/translate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        text,
+        text: text,
         source: sourceLang,
         target: targetLang
       })
     });
 
     const data = await response.json();
-    document.getElementById("output-text").value = data.translatedText || "Translation failed.";
+
+    if (data.translatedText) {
+      document.getElementById("output-text").value = data.translatedText;
+    } else {
+      document.getElementById("output-text").value = "Translation failed. Try again.";
+    }
+
   } catch (error) {
     console.error("Translation error:", error);
-    document.getElementById("output-text").value = "Error while translating. Try again.";
+    document.getElementById("output-text").value = "Error while translating. Please check server or network.";
   }
 }
