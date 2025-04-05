@@ -4,28 +4,15 @@ async function translateText() {
   const targetLang = document.getElementById("targetlang").value;
 
   try {
-    const response = await fetch("https://translate.argosopentech.com/translate", {
+    const res = await fetch("http://localhost:3000/translate", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        q: text,
-        source: sourceLang,
-        target: targetLang,
-        format: "text"
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, source: sourceLang, target: targetLang })
     });
 
-    const data = await response.json();
-
-    if (data.translatedText) {
-      document.getElementById("output-text").value = data.translatedText;
-    } else {
-      document.getElementById("output-text").value = "Translation failed.";
-    }
-  } catch (error) {
-    console.error(error);
+    const data = await res.json();
+    document.getElementById("output-text").value = data.translatedText || "Translation failed.";
+  } catch (err) {
     document.getElementById("output-text").value = "Error while translating. Try again.";
   }
 }
