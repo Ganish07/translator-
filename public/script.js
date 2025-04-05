@@ -4,7 +4,8 @@ async function translateText() {
   const targetLang = document.getElementById("targetlang").value;
 
   try {
-    const response = await fetch("https://translator-apif.onrender.com/translate", {
+   const response = await fetch("https://translator-8sxa.onrender.com/translate", {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json"
