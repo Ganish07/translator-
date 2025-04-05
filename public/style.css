@@ -8,14 +8,10 @@ body {
 }
 
 .hero {
-
- body {
   background-image: url("/images/mountains.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-}
-
   height: 300px;
   display: flex;
   justify-content: center;
@@ -111,23 +107,4 @@ select {
   background: #ffffff;
   padding: 30px 20px;
   margin: 40px auto;
-  border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-  max-width: 800px;
-}
-
-.facts h2 {
-  color: #0077b6;
-  margin-bottom: 10px;
-}
-
-.facts p {
-  font-size: 17px;
-}
-
-footer {
-  background: #0077b6;
-  color: white;
-  padding: 20px;
-  font-size: 14px;
-}
+  border-radius: 10px
