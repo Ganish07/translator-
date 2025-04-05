@@ -26,7 +26,9 @@ app.post("/translate", async (req, res) => {
     res.status(500).json({ error: "Translation failed" });
   }
 });
-
+app.get('/', (req, res) => {
+  res.send('Welcome to Instant Translator API');
+});
 app.listen(PORT, () => {
   console.log('Server is running on http://localhost:${PORT}');
 });
