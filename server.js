@@ -1,20 +1,24 @@
-const express = require("express");
-const axios = require("axios");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const express = require('express');
+const axios = require('axios');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.post("/translate", async (req, res) => {
-  const { q, source, target } = req.body;
+// Translation Route
+app.post('/translate', async (req, res) => {
+  const { text, source, target } = req.body;
 
   try {
-    const response = await axios.post("https://libretranslate.de/translate", {
-      q,
+    const response = await axios.post('https://libretranslate.de/translate', {
+      q: text,
       source,
       target,
       format: "text"
@@ -22,13 +26,17 @@ app.post("/translate", async (req, res) => {
 
     res.json({ translatedText: response.data.translatedText });
   } catch (error) {
-    console.error("Translation error:", error);
-    res.status(500).json({ error: "Translation failed" });
+    console.error('Translation error:', error);
+    res.status(500).json({ error: 'Translation failed' });
   }
 });
+
+// Optional: Handle root URL (in case static doesn't cover it)
 app.get('/', (req, res) => {
-  res.send('Welcome to Instant Translator API');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+// Start the server
 app.listen(PORT, () => {
-  console.log('Server is running on http://localhost:${PORT}');
+  console.log('Server running on http://localhost:${PORT}');
 });
