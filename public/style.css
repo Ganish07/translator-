@@ -8,7 +8,9 @@ body {
 }
 
 .hero {
-  background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?fit=crop&w=1950&q=80') no-repeat center center/cover;
+
+  background: url('mountains-plane.jpg') no-repeat center center/cover;
+
   height: 300px;
   display: flex;
   justify-content: center;
