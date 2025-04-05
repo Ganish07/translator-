@@ -31,6 +31,6 @@ async function translateText() {
 
   } catch (error) {
     console.error("Translation error:", error);
-    document.getElementById("output-text").value = "Error while translating. Please check server or network.";
+    document.getElementById("output-text").value = "Error while translating. Please check the server.";
   }
 }
