@@ -3,6 +3,11 @@ async function translateText() {
   const sourceLang = document.getElementById("sourcelang").value;
   const targetLang = document.getElementById("targetlang").value;
 
+  if (!text.trim()) {
+    document.getElementById("output-text").value = "Please enter text to translate.";
+    return;
+  }
+
   try {
     const response = await fetch("/translate", {
       method: "POST",
@@ -21,11 +26,11 @@ async function translateText() {
     if (data.translatedText) {
       document.getElementById("output-text").value = data.translatedText;
     } else {
-      document.getElementById("output-text").value = "Translation failed.";
+      document.getElementById("output-text").value = "Translation failed. Try again.";
     }
 
   } catch (error) {
     console.error("Translation error:", error);
-    document.getElementById("output-text").value = "Error while translating.";
+    document.getElementById("output-text").value = "Error while translating. Please check the server.";
   }
 }
