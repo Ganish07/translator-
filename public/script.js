@@ -4,12 +4,17 @@ async function translateText() {
   const targetLang = document.getElementById("targetlang").value;
 
   try {
-    const response = await fetch("https://translator-apif.onrender.com/translate", {
+    const response = await fetch("https://translate.argosopentech.com/translate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ text, source: sourceLang, target: targetLang })
+      body: JSON.stringify({
+        q: text,
+        source: sourceLang,
+        target: targetLang,
+        format: "text"
+      })
     });
 
     const data = await response.json();
