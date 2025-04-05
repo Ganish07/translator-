@@ -7,6 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Check if .env is working correctly
+console.log("🔑 Loaded RapidAPI Key:", process.env.RAPIDAPI_KEY ? "✔️ Loaded" : "❌ Missing");
+
+// POST /translate route
 app.post('/translate', async (req, res) => {
   const { text, source, target } = req.body;
 
@@ -27,13 +31,4 @@ app.post('/translate', async (req, res) => {
       }),
     });
 
-    res.json({ translatedText: response.data.data.translations[0].translatedText });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: 'Translation failed' });
-  }
-});
-
-app.listen(3000, () => {
-  console.log('✅ Server running on http://localhost:3000');
-});
+    const translated = response.data.data.translations[0].
