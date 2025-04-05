@@ -1,3 +1,5 @@
+require('dotenv').config(); // Load env variables
+
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
@@ -6,13 +8,11 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Replace with your RapidAPI key
-const RAPIDAPI_KEY = 'YOUR_RAPIDAPI_KEY_HERE';
 
 app.post('/translate', async (req, res) => {
   const { text, source, target } = req.body;
@@ -38,7 +38,7 @@ app.post('/translate', async (req, res) => {
     res.json({ translatedText: translated });
 
   } catch (err) {
-    console.error(err.message);
+    console.error('API error:', err.message);
     res.status(500).json({ error: 'Translation failed' });
   }
 });
@@ -48,5 +48,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
