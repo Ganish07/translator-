@@ -9,7 +9,7 @@ async function translateText() {
   }
 
   try {
-    const response = await fetch("/translate", {
+    const response = await fetch("/translate", { ... }); 
       method: "POST",
       headers: {
         "Content-Type": "application/json"
