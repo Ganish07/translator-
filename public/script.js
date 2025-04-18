@@ -9,7 +9,7 @@ async function translateText() {
   }
 
   try {
-    const response = await fetch("/translate", { ... }); 
+    const response = await fetch("/translate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -27,10 +27,10 @@ async function translateText() {
       document.getElementById("output-text").value = data.translatedText;
     } else {
       document.getElementById("output-text").value = "Translation failed.";
-      console.error("Backend response error:", data);
+      console.error("Response error:", data);
     }
   } catch (error) {
     document.getElementById("output-text").value = "Error while translating. Try again.";
-    console.error("Fetch error:", error);
+    console.error("Error during fetch:", error);
   }
 }
