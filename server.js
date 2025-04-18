@@ -38,7 +38,7 @@ app.post('/translate', async (req, res) => {
     res.json({ translatedText: translated });
 
   } catch (err) {
-    console.error('API error:', err.message);
+   console.error('API error:', err.response?.data || err.message);
     res.status(500).json({ error: 'Translation failed' });
   }
 });
