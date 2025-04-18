@@ -9,16 +9,15 @@ async function translateText() {
   }
 
   try {
-    const response = await fetch("https://libretranslate.de/translate", {
+    const response = await fetch("/translate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        q: text,
+        text: text,
         source: sourceLang,
-        target: targetLang,
-        format: "text"
+        target: targetLang
       })
     });
 
@@ -28,10 +27,10 @@ async function translateText() {
       document.getElementById("output-text").value = data.translatedText;
     } else {
       document.getElementById("output-text").value = "Translation failed.";
-      console.error("Response error:", data);
+      console.error("Backend response error:", data);
     }
   } catch (error) {
     document.getElementById("output-text").value = "Error while translating. Try again.";
-    console.error("Error during fetch:", error);
+    console.error("Fetch error:", error);
   }
 }
