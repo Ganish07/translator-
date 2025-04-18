@@ -1,50 +1,37 @@
-require('dotenv').config(); // Load env variables
-
 const express = require('express');
 const axios = require('axios');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 
 app.use(cors({ origin: '*' }));
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
 app.post('/translate', async (req, res) => {
-  const { text, source, target } = req.body;
+  const { text, targetLanguage } = req.body;
+
+  const encodedParams = new URLSearchParams();
+  encodedParams.set('q', text);
+  encodedParams.set('target', targetLanguage);
+  encodedParams.set('source', 'en');
 
   try {
-    const response = await axios({
-      method: 'POST',
-      url: 'https://google-translate1.p.rapidapi.com/language/translate/v2',
+    const response = await axios.post('https://google-translate1.p.rapidapi.com/language/translate/v2', encodedParams, {
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
-        'X-RapidAPI-Key': RAPIDAPI_KEY,
-        'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com'
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com',
       },
-      data: new URLSearchParams({
-        q: text,
-        source,
-        target,
-        format: 'text'
-      })
     });
 
-    const translated = response.data.data.translations[0].translatedText;
-    res.json({ translatedText: translated });
-
+    const translatedText = response.data.data.translations[0].translatedText;
+    res.json({ translatedText });
   } catch (err) {
-   console.error('API error:', err.response?.data || err.message);
+    console.error('API error:', err.response?.data || err.message);
     res.status(500).json({ error: 'Translation failed' });
   }
-});
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.listen(PORT, () => {
