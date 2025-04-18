@@ -49,6 +49,6 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
-}) .on('error,(err) => {
-      console.error('server failed to start:',err);
+}).on('error', (err) => {
+  console.error("Server error:", err);
 });
